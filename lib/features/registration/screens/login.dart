@@ -5,16 +5,21 @@ import '../../../core/constants/colors.dart';
 import '../../../core/constants/routes_name.dart';
 import '../../../core/constants/app_keys.dart';
 import '../../../core/validators/app_validator.dart';
+
 class LoginScreen extends StatefulWidget {
+
   const LoginScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<LoginScreen> createState() =>
+      _LoginScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _LoginScreenState
+    extends State<LoginScreen> {
 
-  final _formKey = GlobalKey<FormState>();
+  final _formKey =
+  GlobalKey<FormState>();
 
   String email = '';
 
@@ -27,7 +32,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
     return Scaffold(
 
-      backgroundColor: AppColors.background,
+      backgroundColor:
+      AppColors.background,
 
       body: SafeArea(
 
@@ -35,7 +41,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
           child: Padding(
 
-            padding: const EdgeInsets.symmetric(
+            padding:
+            const EdgeInsets.symmetric(
               horizontal: 24,
               vertical: 30,
             ),
@@ -45,6 +52,7 @@ class _LoginScreenState extends State<LoginScreen> {
               key: _formKey,
 
               child: Column(
+
                 crossAxisAlignment:
                 CrossAxisAlignment.start,
 
@@ -54,6 +62,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                   /// LOGO
                   Center(
+
                     child: Container(
 
                       width: 90,
@@ -62,21 +71,31 @@ class _LoginScreenState extends State<LoginScreen> {
 
                       decoration: BoxDecoration(
 
-                        color: AppColors.primary,
+                        color:
+                        AppColors.primary,
 
                         borderRadius:
-                        BorderRadius.circular(28),
+                        BorderRadius.circular(
+                          28,
+                        ),
 
                         boxShadow: [
 
                           BoxShadow(
 
-                            color: AppColors.primary
-                                .withValues(alpha: 0.25),
+                            color:
+                            AppColors.primary
+                                .withOpacity(
+                              0.25,
+                            ),
 
-                            blurRadius: 20,
+                            blurRadius: 30,
 
-                            offset: const Offset(0, 10),
+                            offset:
+                            const Offset(
+                              0,
+                              16,
+                            ),
                           ),
                         ],
                       ),
@@ -85,7 +104,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
                         Icons.favorite,
 
-                        color: AppColors.white,
+                        color:
+                        AppColors.white,
 
                         size: 42,
                       ),
@@ -96,6 +116,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                   /// TITLE
                   const Center(
+
                     child: Text(
 
                       "Welcome Back",
@@ -104,9 +125,11 @@ class _LoginScreenState extends State<LoginScreen> {
 
                         fontSize: 30,
 
-                        fontWeight: FontWeight.w900,
+                        fontWeight:
+                        FontWeight.w900,
 
-                        color: AppColors.textDark,
+                        color:
+                        AppColors.textDark,
                       ),
                     ),
                   ),
@@ -114,14 +137,16 @@ class _LoginScreenState extends State<LoginScreen> {
                   const SizedBox(height: 10),
 
                   /// SUBTITLE
-                  Center(
+                  const Center(
+
                     child: Text(
 
                       "Login to continue your wellness journey",
 
                       style: TextStyle(
 
-                        color: AppColors.textLight,
+                        color:
+                        AppColors.textLight,
 
                         fontSize: 15,
                       ),
@@ -137,9 +162,11 @@ class _LoginScreenState extends State<LoginScreen> {
 
                     style: TextStyle(
 
-                      fontWeight: FontWeight.w700,
+                      fontWeight:
+                      FontWeight.w700,
 
-                      color: AppColors.textDark,
+                      color:
+                      AppColors.textDark,
                     ),
                   ),
 
@@ -149,42 +176,99 @@ class _LoginScreenState extends State<LoginScreen> {
                   TextFormField(
 
                     keyboardType:
-                    TextInputType.emailAddress,
+                    TextInputType
+                        .emailAddress,
 
-                    decoration: InputDecoration(
+                    decoration:
+                    InputDecoration(
 
-                      hintText: "Enter your email",
+                      hintText:
+                      "Enter your email",
 
-                      hintStyle: const TextStyle(
-                        color: AppColors.textLight,
+                      hintStyle:
+                      const TextStyle(
+
+                        color:
+                        AppColors.textLight,
                       ),
 
-                      prefixIcon: const Icon(
-                        Icons.email_outlined,
+                      prefixIcon:
+                      const Icon(
+
+                        Icons
+                            .email_outlined,
                       ),
 
                       filled: true,
 
-                      fillColor: AppColors.white,
+                      fillColor:
+                      AppColors.white,
 
                       contentPadding:
-                      const EdgeInsets.symmetric(
+                      const EdgeInsets
+                          .symmetric(
                         vertical: 18,
                       ),
 
-                      border: OutlineInputBorder(
+                      border:
+                      OutlineInputBorder(
 
                         borderRadius:
-                        BorderRadius.circular(18),
+                        BorderRadius
+                            .circular(
+                          20,
+                        ),
 
-                        borderSide: BorderSide.none,
+                        borderSide:
+                        BorderSide.none,
+                      ),
+
+                      enabledBorder:
+                      OutlineInputBorder(
+
+                        borderRadius:
+                        BorderRadius
+                            .circular(
+                          20,
+                        ),
+
+                        borderSide:
+                        BorderSide.none,
+                      ),
+
+                      focusedBorder:
+                      OutlineInputBorder(
+
+                        borderRadius:
+                        BorderRadius
+                            .circular(
+                          20,
+                        ),
+
+                        borderSide:
+                        BorderSide(
+
+                          color:
+                          AppColors
+                              .primary
+                              .withOpacity(
+                            0.20,
+                          ),
+
+                          width: 1.5,
+                        ),
                       ),
                     ),
 
-                    onChanged: (value) => email = value,
+                    onChanged:
+                        (value) {
+
+                      email = value;
+                    },
 
                     validator:
-                    AppValidator.validateEmail,
+                    AppValidator
+                        .validateEmail,
                   ),
 
                   const SizedBox(height: 24),
@@ -196,9 +280,11 @@ class _LoginScreenState extends State<LoginScreen> {
 
                     style: TextStyle(
 
-                      fontWeight: FontWeight.w700,
+                      fontWeight:
+                      FontWeight.w700,
 
-                      color: AppColors.textDark,
+                      color:
+                      AppColors.textDark,
                     ),
                   ),
 
@@ -207,21 +293,30 @@ class _LoginScreenState extends State<LoginScreen> {
                   /// PASSWORD FIELD
                   TextFormField(
 
-                    obscureText: obscurePassword,
+                    obscureText:
+                    obscurePassword,
 
-                    decoration: InputDecoration(
+                    decoration:
+                    InputDecoration(
 
-                      hintText: "Enter your password",
+                      hintText:
+                      "Enter your password",
 
-                      hintStyle: const TextStyle(
-                        color: AppColors.textLight,
+                      hintStyle:
+                      const TextStyle(
+
+                        color:
+                        AppColors.textLight,
                       ),
 
-                      prefixIcon: const Icon(
+                      prefixIcon:
+                      const Icon(
+
                         Icons.lock_outline,
                       ),
 
-                      suffixIcon: IconButton(
+                      suffixIcon:
+                      IconButton(
 
                         onPressed: () {
 
@@ -235,34 +330,83 @@ class _LoginScreenState extends State<LoginScreen> {
                         icon: Icon(
 
                           obscurePassword
-                              ? Icons.visibility_off
-                              : Icons.visibility,
+                              ? Icons
+                              .visibility_off
+                              : Icons
+                              .visibility,
                         ),
                       ),
 
                       filled: true,
 
-                      fillColor: AppColors.white,
+                      fillColor:
+                      AppColors.white,
 
                       contentPadding:
-                      const EdgeInsets.symmetric(
+                      const EdgeInsets
+                          .symmetric(
                         vertical: 18,
                       ),
 
-                      border: OutlineInputBorder(
+                      border:
+                      OutlineInputBorder(
 
                         borderRadius:
-                        BorderRadius.circular(18),
+                        BorderRadius
+                            .circular(
+                          20,
+                        ),
 
-                        borderSide: BorderSide.none,
+                        borderSide:
+                        BorderSide.none,
+                      ),
+
+                      enabledBorder:
+                      OutlineInputBorder(
+
+                        borderRadius:
+                        BorderRadius
+                            .circular(
+                          20,
+                        ),
+
+                        borderSide:
+                        BorderSide.none,
+                      ),
+
+                      focusedBorder:
+                      OutlineInputBorder(
+
+                        borderRadius:
+                        BorderRadius
+                            .circular(
+                          20,
+                        ),
+
+                        borderSide:
+                        BorderSide(
+
+                          color:
+                          AppColors
+                              .primary
+                              .withOpacity(
+                            0.20,
+                          ),
+
+                          width: 1.5,
+                        ),
                       ),
                     ),
 
-                    onChanged: (value) =>
-                    password = value,
+                    onChanged:
+                        (value) {
+
+                      password = value;
+                    },
 
                     validator:
-                    AppValidator.validatePassword,
+                    AppValidator
+                        .validatePassword,
                   ),
 
                   const SizedBox(height: 14),
@@ -270,17 +414,20 @@ class _LoginScreenState extends State<LoginScreen> {
                   /// FORGOT PASSWORD
                   Align(
 
-                    alignment: Alignment.centerRight,
+                    alignment:
+                    Alignment.centerRight,
 
                     child: TextButton(
 
                       onPressed: () {
 
-                        Navigator.pushNamed(
+                        Navigator
+                            .pushNamed(
 
                           context,
 
-                          RoutesName.forgotPassword,
+                          RoutesName
+                              .forgotPassword,
                         );
                       },
 
@@ -290,9 +437,11 @@ class _LoginScreenState extends State<LoginScreen> {
 
                         style: TextStyle(
 
-                          color: AppColors.primary,
+                          color:
+                          AppColors.primary,
 
-                          fontWeight: FontWeight.w700,
+                          fontWeight:
+                          FontWeight.w700,
                         ),
                       ),
                     ),
@@ -301,63 +450,101 @@ class _LoginScreenState extends State<LoginScreen> {
                   const SizedBox(height: 12),
 
                   /// LOGIN BUTTON
-                  SizedBox(
+                  AnimatedScale(
 
-                    width: double.infinity,
+                    scale: 1,
 
-                    height: 58,
+                    duration:
+                    const Duration(
+                      milliseconds: 250,
+                    ),
 
-                    child: ElevatedButton(
+                    child: SizedBox(
 
-                      style: ElevatedButton.styleFrom(
+                      width:
+                      double.infinity,
 
-                        backgroundColor:
-                        AppColors.primary,
+                      height: 58,
 
-                        elevation: 0,
+                      child:
+                      ElevatedButton(
 
-                        shape: RoundedRectangleBorder(
+                        style:
+                        ElevatedButton
+                            .styleFrom(
 
-                          borderRadius:
-                          BorderRadius.circular(20),
+                          backgroundColor:
+                          AppColors
+                              .primary,
+
+                          elevation: 8,
+
+                          shadowColor:
+                          AppColors
+                              .primary
+                              .withOpacity(
+                            0.25,
+                          ),
+
+                          shape:
+                          RoundedRectangleBorder(
+
+                            borderRadius:
+                            BorderRadius
+                                .circular(
+                              22,
+                            ),
+                          ),
                         ),
-                      ),
 
-                      onPressed: () async {
+                        onPressed:
+                            () async {
 
-                        if (_formKey.currentState!
-                            .validate()) {
+                          if (_formKey
+                              .currentState!
+                              .validate()) {
 
-                          final prefs =
-                          await SharedPreferences
-                              .getInstance();
+                            final prefs =
+                            await SharedPreferences
+                                .getInstance();
 
-                          await prefs.setString(
-                            AppKeys.token,
-                            '123',
-                          );
+                            await prefs
+                                .setString(
 
-                          Navigator
-                              .pushReplacementNamed(
+                              AppKeys.token,
 
-                            context,
+                              '123',
+                            );
 
-                            RoutesName.home,
-                          );
-                        }
-                      },
+                            Navigator
+                                .pushReplacementNamed(
 
-                      child: const Text(
+                              context,
 
-                        "Login",
+                              RoutesName
+                                  .collectData,
+                            );
+                          }
+                        },
 
-                        style: TextStyle(
+                        child:
+                        const Text(
 
-                          fontSize: 17,
+                          "Login",
 
-                          fontWeight: FontWeight.w800,
+                          style:
+                          TextStyle(
 
-                          color: AppColors.white,
+                            fontSize: 17,
+
+                            fontWeight:
+                            FontWeight
+                                .w800,
+
+                            color:
+                            AppColors
+                                .white,
+                          ),
                         ),
                       ),
                     ),
@@ -369,11 +556,13 @@ class _LoginScreenState extends State<LoginScreen> {
                   Row(
 
                     mainAxisAlignment:
-                    MainAxisAlignment.center,
+                    MainAxisAlignment
+                        .center,
 
                     children: [
 
                       const Text(
+
                         "Don't have an account? ",
                       ),
 
@@ -381,11 +570,13 @@ class _LoginScreenState extends State<LoginScreen> {
 
                         onTap: () {
 
-                          Navigator.pushNamed(
+                          Navigator
+                              .pushNamed(
 
                             context,
 
-                            RoutesName.signup,
+                            RoutesName
+                                .signup,
                           );
                         },
 
@@ -395,9 +586,13 @@ class _LoginScreenState extends State<LoginScreen> {
 
                           style: TextStyle(
 
-                            color: AppColors.primary,
+                            color:
+                            AppColors
+                                .primary,
 
-                            fontWeight: FontWeight.w900,
+                            fontWeight:
+                            FontWeight
+                                .w900,
                           ),
                         ),
                       ),

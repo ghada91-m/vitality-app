@@ -10,5 +10,7 @@ class RoutesName {
 
   static const forgotPassword = '/forgot';
 
+  static const collectData = '/collectData';
+
   static const home = '/home';
 }

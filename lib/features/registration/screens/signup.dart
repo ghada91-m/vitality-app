@@ -382,8 +382,7 @@ class _SignupScreenState extends State<SignupScreen> {
 
                                 context,
 
-                                RoutesName.home,
-                              );
+                                  RoutesName.collectData                              );
                             }
                           },
 
