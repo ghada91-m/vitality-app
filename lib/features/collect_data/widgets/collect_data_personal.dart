@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../core/constants/colors.dart';
 import '../../../core/storage/app_preferences.dart';
+import '../../../core/services/health_service.dart';
 
 class CollectDataPersonal
     extends StatefulWidget {
@@ -25,16 +26,6 @@ class _CollectDataPersonalState
   double height = 172;
 
   double weight = 64.5;
-
-  /// BMI
-  double get bmi {
-
-    double heightMeter =
-        height / 100;
-
-    return weight /
-        (heightMeter * heightMeter);
-  }
 
   @override
   void initState() {
@@ -61,6 +52,14 @@ class _CollectDataPersonalState
 
   @override
   Widget build(BuildContext context) {
+
+    final bmi =
+    HealthService.calculateBMI(
+
+      height: height,
+
+      weight: weight,
+    );
 
     return SingleChildScrollView(
 
@@ -305,7 +304,7 @@ class _CollectDataPersonalState
 
               borderRadius:
               BorderRadius.circular(
-                28,
+                30,
               ),
 
               boxShadow: [
@@ -318,7 +317,7 @@ class _CollectDataPersonalState
                     alpha: 0.20,
                   ),
 
-                  blurRadius: 20,
+                  blurRadius: 22,
 
                   offset:
                   const Offset(
@@ -356,8 +355,37 @@ class _CollectDataPersonalState
                 ),
 
                 const SizedBox(
-                  height: 14,
+                  height: 18,
                 ),
+
+                /// ICON
+                Container(
+
+                  width: 74,
+
+                  height: 74,
+
+                  decoration: BoxDecoration(
+
+                    color: Colors.white
+                        .withValues(
+                      alpha: 0.12,
+                    ),
+
+                    shape: BoxShape.circle,
+                  ),
+
+                  child: const Icon(
+
+                    Icons.favorite,
+
+                    color: Colors.white,
+
+                    size: 38,
+                  ),
+                ),
+
+                const SizedBox(height: 18),
 
                 Row(
                   children: [
@@ -375,7 +403,7 @@ class _CollectDataPersonalState
                         color:
                         Colors.white,
 
-                        fontSize: 42,
+                        fontSize: 46,
 
                         fontWeight:
                         FontWeight.w900,
@@ -411,13 +439,18 @@ class _CollectDataPersonalState
                         ),
                       ),
 
-                      child:
-                      const Text(
+                      child: Text(
 
-                        "Healthy",
+                        bmi < 18.5
+                            ? "Underweight"
+                            : bmi < 25
+                            ? "Healthy"
+                            : bmi < 30
+                            ? "Overweight"
+                            : "Obese",
 
                         style:
-                        TextStyle(
+                        const TextStyle(
 
                           color:
                           Colors.white,

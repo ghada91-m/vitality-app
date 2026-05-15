@@ -6,6 +6,9 @@ import '../../../core/constants/routes_name.dart';
 import '../../../core/constants/app_keys.dart';
 import '../../../core/validators/app_validator.dart';
 
+import '../../../core/widgets/app_button.dart';
+import '../../../core/widgets/app_text_field.dart';
+
 class LoginScreen extends StatefulWidget {
 
   const LoginScreen({super.key});
@@ -86,15 +89,15 @@ class _LoginScreenState
                             color:
                             AppColors.primary
                                 .withOpacity(
-                              0.25,
+                              0.20,
                             ),
 
-                            blurRadius: 30,
+                            blurRadius: 28,
 
                             offset:
                             const Offset(
                               0,
-                              16,
+                              14,
                             ),
                           ),
                         ],
@@ -173,92 +176,17 @@ class _LoginScreenState
                   const SizedBox(height: 10),
 
                   /// EMAIL FIELD
-                  TextFormField(
+                  AppTextField(
+
+                    hint:
+                    "Enter your email",
+
+                    icon:
+                    Icons.email_outlined,
 
                     keyboardType:
                     TextInputType
                         .emailAddress,
-
-                    decoration:
-                    InputDecoration(
-
-                      hintText:
-                      "Enter your email",
-
-                      hintStyle:
-                      const TextStyle(
-
-                        color:
-                        AppColors.textLight,
-                      ),
-
-                      prefixIcon:
-                      const Icon(
-
-                        Icons
-                            .email_outlined,
-                      ),
-
-                      filled: true,
-
-                      fillColor:
-                      AppColors.white,
-
-                      contentPadding:
-                      const EdgeInsets
-                          .symmetric(
-                        vertical: 18,
-                      ),
-
-                      border:
-                      OutlineInputBorder(
-
-                        borderRadius:
-                        BorderRadius
-                            .circular(
-                          20,
-                        ),
-
-                        borderSide:
-                        BorderSide.none,
-                      ),
-
-                      enabledBorder:
-                      OutlineInputBorder(
-
-                        borderRadius:
-                        BorderRadius
-                            .circular(
-                          20,
-                        ),
-
-                        borderSide:
-                        BorderSide.none,
-                      ),
-
-                      focusedBorder:
-                      OutlineInputBorder(
-
-                        borderRadius:
-                        BorderRadius
-                            .circular(
-                          20,
-                        ),
-
-                        borderSide:
-                        BorderSide(
-
-                          color:
-                          AppColors
-                              .primary
-                              .withOpacity(
-                            0.20,
-                          ),
-
-                          width: 1.5,
-                        ),
-                      ),
-                    ),
 
                     onChanged:
                         (value) {
@@ -291,112 +219,20 @@ class _LoginScreenState
                   const SizedBox(height: 10),
 
                   /// PASSWORD FIELD
-                  TextFormField(
+                  AppTextField(
+
+                    hint:
+                    "Enter your password",
+
+                    icon:
+                    Icons.lock_outline,
 
                     obscureText:
                     obscurePassword,
 
-                    decoration:
-                    InputDecoration(
-
-                      hintText:
-                      "Enter your password",
-
-                      hintStyle:
-                      const TextStyle(
-
-                        color:
-                        AppColors.textLight,
-                      ),
-
-                      prefixIcon:
-                      const Icon(
-
-                        Icons.lock_outline,
-                      ),
-
-                      suffixIcon:
-                      IconButton(
-
-                        onPressed: () {
-
-                          setState(() {
-
-                            obscurePassword =
-                            !obscurePassword;
-                          });
-                        },
-
-                        icon: Icon(
-
-                          obscurePassword
-                              ? Icons
-                              .visibility_off
-                              : Icons
-                              .visibility,
-                        ),
-                      ),
-
-                      filled: true,
-
-                      fillColor:
-                      AppColors.white,
-
-                      contentPadding:
-                      const EdgeInsets
-                          .symmetric(
-                        vertical: 18,
-                      ),
-
-                      border:
-                      OutlineInputBorder(
-
-                        borderRadius:
-                        BorderRadius
-                            .circular(
-                          20,
-                        ),
-
-                        borderSide:
-                        BorderSide.none,
-                      ),
-
-                      enabledBorder:
-                      OutlineInputBorder(
-
-                        borderRadius:
-                        BorderRadius
-                            .circular(
-                          20,
-                        ),
-
-                        borderSide:
-                        BorderSide.none,
-                      ),
-
-                      focusedBorder:
-                      OutlineInputBorder(
-
-                        borderRadius:
-                        BorderRadius
-                            .circular(
-                          20,
-                        ),
-
-                        borderSide:
-                        BorderSide(
-
-                          color:
-                          AppColors
-                              .primary
-                              .withOpacity(
-                            0.20,
-                          ),
-
-                          width: 1.5,
-                        ),
-                      ),
-                    ),
+                    validator:
+                    AppValidator
+                        .validatePassword,
 
                     onChanged:
                         (value) {
@@ -404,9 +240,30 @@ class _LoginScreenState
                       password = value;
                     },
 
-                    validator:
-                    AppValidator
-                        .validatePassword,
+                    suffixIcon:
+                    IconButton(
+
+                      onPressed: () {
+
+                        setState(() {
+
+                          obscurePassword =
+                          !obscurePassword;
+                        });
+                      },
+
+                      icon: Icon(
+
+                        obscurePassword
+                            ? Icons
+                            .visibility_off
+                            : Icons
+                            .visibility,
+
+                        color:
+                        AppColors.textLight,
+                      ),
+                    ),
                   ),
 
                   const SizedBox(height: 14),
@@ -421,8 +278,7 @@ class _LoginScreenState
 
                       onPressed: () {
 
-                        Navigator
-                            .pushNamed(
+                        Navigator.pushNamed(
 
                           context,
 
@@ -447,107 +303,42 @@ class _LoginScreenState
                     ),
                   ),
 
-                  const SizedBox(height: 12),
+                  const SizedBox(height: 16),
 
                   /// LOGIN BUTTON
-                  AnimatedScale(
+                  AppButton(
 
-                    scale: 1,
+                    text: "Login",
 
-                    duration:
-                    const Duration(
-                      milliseconds: 250,
-                    ),
+                    onPressed:
+                        () async {
 
-                    child: SizedBox(
+                      if (_formKey
+                          .currentState!
+                          .validate()) {
 
-                      width:
-                      double.infinity,
+                        final prefs =
+                        await SharedPreferences
+                            .getInstance();
 
-                      height: 58,
+                        await prefs
+                            .setString(
 
-                      child:
-                      ElevatedButton(
+                          AppKeys.token,
 
-                        style:
-                        ElevatedButton
-                            .styleFrom(
+                          '123',
+                        );
 
-                          backgroundColor:
-                          AppColors
-                              .primary,
+                        Navigator
+                            .pushReplacementNamed(
 
-                          elevation: 8,
+                          context,
 
-                          shadowColor:
-                          AppColors
-                              .primary
-                              .withOpacity(
-                            0.25,
-                          ),
-
-                          shape:
-                          RoundedRectangleBorder(
-
-                            borderRadius:
-                            BorderRadius
-                                .circular(
-                              22,
-                            ),
-                          ),
-                        ),
-
-                        onPressed:
-                            () async {
-
-                          if (_formKey
-                              .currentState!
-                              .validate()) {
-
-                            final prefs =
-                            await SharedPreferences
-                                .getInstance();
-
-                            await prefs
-                                .setString(
-
-                              AppKeys.token,
-
-                              '123',
-                            );
-
-                            Navigator
-                                .pushReplacementNamed(
-
-                              context,
-
-                              RoutesName
-                                  .collectData,
-                            );
-                          }
-                        },
-
-                        child:
-                        const Text(
-
-                          "Login",
-
-                          style:
-                          TextStyle(
-
-                            fontSize: 17,
-
-                            fontWeight:
-                            FontWeight
-                                .w800,
-
-                            color:
-                            AppColors
-                                .white,
-                          ),
-                        ),
-                      ),
-                    ),
+                          RoutesName
+                              .collectData,
+                        );
+                      }
+                    },
                   ),
 
                   const SizedBox(height: 28),
@@ -587,12 +378,10 @@ class _LoginScreenState
                           style: TextStyle(
 
                             color:
-                            AppColors
-                                .primary,
+                            AppColors.primary,
 
                             fontWeight:
-                            FontWeight
-                                .w900,
+                            FontWeight.w900,
                           ),
                         ),
                       ),

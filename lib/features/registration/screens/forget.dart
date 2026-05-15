@@ -4,7 +4,11 @@ import '../../../core/constants/colors.dart';
 import '../../../core/constants/routes_name.dart';
 import '../../../core/validators/app_validator.dart';
 
+import '../../../core/widgets/app_button.dart';
+import '../../../core/widgets/app_text_field.dart';
+
 class ForgotPasswordScreen extends StatefulWidget {
+
   const ForgotPasswordScreen({super.key});
 
   @override
@@ -24,7 +28,6 @@ class _ForgotPasswordScreenState
   void sendResetLink() {
 
     if (!_formKey.currentState!.validate()) {
-
       return;
     }
 
@@ -36,7 +39,8 @@ class _ForgotPasswordScreenState
           "Reset link sent successfully",
         ),
 
-        backgroundColor: AppColors.primary,
+        backgroundColor:
+        AppColors.primary,
       ),
     );
 
@@ -49,7 +53,9 @@ class _ForgotPasswordScreenState
         if (!mounted) return;
 
         Navigator.pushReplacementNamed(
+
           context,
+
           RoutesName.login,
         );
       },
@@ -61,7 +67,8 @@ class _ForgotPasswordScreenState
 
     return Scaffold(
 
-      backgroundColor: AppColors.background,
+      backgroundColor:
+      AppColors.background,
 
       body: Stack(
         children: [
@@ -82,7 +89,9 @@ class _ForgotPasswordScreenState
                 colors: [
 
                   AppColors.primary
-                      .withValues(alpha: 0.10),
+                      .withValues(
+                    alpha: 0.10,
+                  ),
 
                   AppColors.background,
                 ],
@@ -94,7 +103,8 @@ class _ForgotPasswordScreenState
 
             child: SingleChildScrollView(
 
-              padding: const EdgeInsets.symmetric(
+              padding:
+              const EdgeInsets.symmetric(
                 horizontal: 22,
               ),
 
@@ -119,22 +129,31 @@ class _ForgotPasswordScreenState
 
                           decoration: BoxDecoration(
 
-                            color: AppColors.white,
+                            color:
+                            AppColors.white,
 
                             borderRadius:
-                            BorderRadius.circular(14),
+                            BorderRadius.circular(
+                              14,
+                            ),
 
                             boxShadow: [
 
                               BoxShadow(
 
-                                color: Colors.black
-                                    .withValues(alpha: 0.03),
+                                color:
+                                Colors.black
+                                    .withValues(
+                                  alpha: 0.03,
+                                ),
 
                                 blurRadius: 12,
 
                                 offset:
-                                const Offset(0, 6),
+                                const Offset(
+                                  0,
+                                  6,
+                                ),
                               ),
                             ],
                           ),
@@ -146,8 +165,11 @@ class _ForgotPasswordScreenState
                             },
 
                             icon: const Icon(
+
                               Icons.arrow_back,
-                              color: AppColors.primary,
+
+                              color:
+                              AppColors.primary,
                             ),
                           ),
                         ),
@@ -160,9 +182,11 @@ class _ForgotPasswordScreenState
 
                           style: TextStyle(
 
-                            color: AppColors.primary,
+                            color:
+                            AppColors.primary,
 
-                            fontWeight: FontWeight.w900,
+                            fontWeight:
+                            FontWeight.w900,
 
                             fontSize: 18,
                           ),
@@ -187,10 +211,13 @@ class _ForgotPasswordScreenState
 
                       decoration: BoxDecoration(
 
-                        color: AppColors.secondary,
+                        color:
+                        AppColors.secondary,
 
                         borderRadius:
-                        BorderRadius.circular(30),
+                        BorderRadius.circular(
+                          30,
+                        ),
                       ),
 
                       child: const Text(
@@ -199,11 +226,13 @@ class _ForgotPasswordScreenState
 
                         style: TextStyle(
 
-                          color: AppColors.primary,
+                          color:
+                          AppColors.primary,
 
                           fontSize: 10,
 
-                          fontWeight: FontWeight.w900,
+                          fontWeight:
+                          FontWeight.w900,
 
                           letterSpacing: 1,
                         ),
@@ -221,11 +250,13 @@ class _ForgotPasswordScreenState
 
                         fontSize: 34,
 
-                        fontWeight: FontWeight.w900,
+                        fontWeight:
+                        FontWeight.w900,
 
                         height: 1.1,
 
-                        color: AppColors.textDark,
+                        color:
+                        AppColors.textDark,
                       ),
                     ),
 
@@ -238,7 +269,8 @@ class _ForgotPasswordScreenState
 
                       style: TextStyle(
 
-                        color: AppColors.textLight,
+                        color:
+                        AppColors.textLight,
 
                         fontSize: 14,
 
@@ -257,117 +289,47 @@ class _ForgotPasswordScreenState
 
                         fontSize: 11,
 
-                        fontWeight: FontWeight.w800,
+                        fontWeight:
+                        FontWeight.w800,
 
-                        color: AppColors.textLight,
+                        color:
+                        AppColors.textLight,
                       ),
                     ),
 
                     const SizedBox(height: 10),
 
                     /// EMAIL FIELD
-                    TextFormField(
+                    AppTextField(
 
-                      controller: emailController,
+                      controller:
+                      emailController,
 
-                      validator:
-                      AppValidator.validateEmail,
+                      hint:
+                      "example@email.com",
+
+                      icon:
+                      Icons.email_outlined,
 
                       keyboardType:
-                      TextInputType.emailAddress,
+                      TextInputType
+                          .emailAddress,
 
-                      decoration: InputDecoration(
-
-                        hintText:
-                        "example@email.com",
-
-                        prefixIcon: const Icon(
-                          Icons.email_outlined,
-                        ),
-
-                        filled: true,
-
-                        fillColor: AppColors.white,
-
-                        contentPadding:
-                        const EdgeInsets.symmetric(
-                          vertical: 18,
-                        ),
-
-                        border: OutlineInputBorder(
-
-                          borderRadius:
-                          BorderRadius.circular(18),
-
-                          borderSide:
-                          BorderSide.none,
-                        ),
-                      ),
+                      validator:
+                      AppValidator
+                          .validateEmail,
                     ),
 
                     const SizedBox(height: 30),
 
                     /// SEND BUTTON
-                    SizedBox(
+                    AppButton(
 
-                      width: double.infinity,
+                      text:
+                      "Send Reset Link",
 
-                      height: 58,
-
-                      child: ElevatedButton(
-
-                        onPressed: sendResetLink,
-
-                        style:
-                        ElevatedButton.styleFrom(
-
-                          backgroundColor:
-                          AppColors.primary,
-
-                          foregroundColor:
-                          AppColors.white,
-
-                          elevation: 4,
-
-                          shape:
-                          RoundedRectangleBorder(
-
-                            borderRadius:
-                            BorderRadius.circular(
-                              22,
-                            ),
-                          ),
-                        ),
-
-                        child: const Row(
-
-                          mainAxisAlignment:
-                          MainAxisAlignment.center,
-
-                          children: [
-
-                            Text(
-
-                              "Send Reset Link",
-
-                              style: TextStyle(
-
-                                fontWeight:
-                                FontWeight.w900,
-
-                                fontSize: 15,
-                              ),
-                            ),
-
-                            SizedBox(width: 8),
-
-                            Icon(
-                              Icons.arrow_forward,
-                              size: 18,
-                            ),
-                          ],
-                        ),
-                      ),
+                      onPressed:
+                      sendResetLink,
                     ),
 
                     const SizedBox(height: 50),
@@ -378,20 +340,26 @@ class _ForgotPasswordScreenState
                       width: double.infinity,
 
                       padding:
-                      const EdgeInsets.all(22),
+                      const EdgeInsets.all(
+                        22,
+                      ),
 
                       decoration: BoxDecoration(
 
-                        color: AppColors.white,
+                        color:
+                        AppColors.white,
 
                         borderRadius:
-                        BorderRadius.circular(28),
+                        BorderRadius.circular(
+                          28,
+                        ),
 
                         boxShadow: [
 
                           BoxShadow(
 
-                            color: Colors.black
+                            color:
+                            Colors.black
                                 .withValues(
                               alpha: 0.03,
                             ),
@@ -399,7 +367,10 @@ class _ForgotPasswordScreenState
                             blurRadius: 18,
 
                             offset:
-                            const Offset(0, 8),
+                            const Offset(
+                              0,
+                              8,
+                            ),
                           ),
                         ],
                       ),
@@ -410,7 +381,8 @@ class _ForgotPasswordScreenState
 
                           Icon(
 
-                            Icons.shield_outlined,
+                            Icons
+                                .shield_outlined,
 
                             color:
                             AppColors.primary,
@@ -469,7 +441,9 @@ class _ForgotPasswordScreenState
 
                           Navigator
                               .pushReplacementNamed(
+
                             context,
+
                             RoutesName.login,
                           );
                         },
@@ -494,7 +468,8 @@ class _ForgotPasswordScreenState
 
                               TextSpan(
 
-                                text: "Log In",
+                                text:
+                                "Log In",
 
                                 style: TextStyle(
 

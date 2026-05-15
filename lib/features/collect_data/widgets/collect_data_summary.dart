@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../core/constants/colors.dart';
 import '../../../core/storage/app_preferences.dart';
+import '../../../core/services/health_service.dart';
 
 class CollectDataSummary
     extends StatelessWidget {
@@ -29,57 +30,44 @@ class CollectDataSummary
   String get lifestyle =>
       AppPreferences.getLifestyle();
 
-  /// BMI
-  double get bmi {
-
-    double heightMeter =
-        height / 100;
-
-    return weight /
-        (heightMeter * heightMeter);
-  }
-
-  /// IDEAL WEIGHT
-  double get idealWeight {
-
-    return (height - 100) * 0.9;
-  }
-
-  /// BMR
-  double get bmr {
-
-    if (gender == "Male") {
-
-      return 10 * weight +
-          6.25 * height -
-          5 * age +
-          5;
-    }
-
-    return 10 * weight +
-        6.25 * height -
-        5 * age -
-        161;
-  }
-
-  /// DAILY CALORIES
-  double get calories {
-
-    switch (lifestyle) {
-
-      case "Sedentary":
-        return bmr * 1.2;
-
-      case "Very Active":
-        return bmr * 1.75;
-
-      default:
-        return bmr * 1.55;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
+
+    /// CALCULATIONS
+    final bmi =
+    HealthService.calculateBMI(
+
+      height: height,
+
+      weight: weight,
+    );
+
+    final bmr =
+    HealthService.calculateBMR(
+
+      gender: gender,
+
+      weight: weight,
+
+      height: height,
+
+      age: age,
+    );
+
+    final calories =
+    HealthService.calculateCalories(
+
+      lifestyle: lifestyle,
+
+      bmr: bmr,
+    );
+
+    final idealWeight =
+    HealthService
+        .calculateIdealWeight(
+
+      height: height,
+    );
 
     return SingleChildScrollView(
 
@@ -187,16 +175,33 @@ class CollectDataSummary
 
               children: [
 
-                const Icon(
+                Container(
 
-                  Icons.favorite,
+                  width: 82,
 
-                  color: Colors.white,
+                  height: 82,
 
-                  size: 62,
+                  decoration: BoxDecoration(
+
+                    color: Colors.white
+                        .withValues(
+                      alpha: 0.12,
+                    ),
+
+                    shape: BoxShape.circle,
+                  ),
+
+                  child: const Icon(
+
+                    Icons.favorite,
+
+                    color: Colors.white,
+
+                    size: 42,
+                  ),
                 ),
 
-                const SizedBox(height: 18),
+                const SizedBox(height: 22),
 
                 const Text(
 
@@ -213,10 +218,12 @@ class CollectDataSummary
                     FontWeight.w700,
 
                     height: 1.6,
+
+                    fontSize: 14,
                   ),
                 ),
 
-                const SizedBox(height: 28),
+                const SizedBox(height: 30),
 
                 /// GRID
                 Row(
@@ -286,7 +293,7 @@ class CollectDataSummary
                   ],
                 ),
 
-                const SizedBox(height: 20),
+                const SizedBox(height: 22),
 
                 /// GOAL
                 Container(
@@ -342,6 +349,8 @@ class CollectDataSummary
 
                             fontWeight:
                             FontWeight.w700,
+
+                            fontSize: 14,
                           ),
                         ),
                       ),

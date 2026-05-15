@@ -5,20 +5,28 @@ import '../../../core/constants/colors.dart';
 import '../../../core/constants/routes_name.dart';
 import '../../../core/constants/app_keys.dart';
 
+import '../../../core/widgets/app_button.dart';
+
 import '../widget/onboarding_ai_scan.dart';
 import '../widget/onboarding_insights.dart';
 import '../widget/onboarding_get_started.dart';
 
 class OnboardingScreen extends StatefulWidget {
-  const OnboardingScreen({super.key});
+
+  const OnboardingScreen({
+    super.key,
+  });
 
   @override
-  State<OnboardingScreen> createState() => _OnboardingScreenState();
+  State<OnboardingScreen> createState() =>
+      _OnboardingScreenState();
 }
 
-class _OnboardingScreenState extends State<OnboardingScreen> {
+class _OnboardingScreenState
+    extends State<OnboardingScreen> {
 
-  final PageController controller = PageController();
+  final PageController controller =
+  PageController();
 
   int currentIndex = 0;
 
@@ -28,21 +36,32 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     if (currentIndex < 2) {
 
       controller.nextPage(
-        duration: const Duration(milliseconds: 300),
+
+        duration:
+        const Duration(
+          milliseconds: 300,
+        ),
+
         curve: Curves.ease,
       );
 
     } else {
 
-      final prefs = await SharedPreferences.getInstance();
+      final prefs =
+      await SharedPreferences
+          .getInstance();
 
       await prefs.setBool(
+
         AppKeys.seenOnboarding,
+
         true,
       );
 
       Navigator.pushReplacementNamed(
+
         context,
+
         RoutesName.login,
       );
     }
@@ -51,15 +70,21 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   /// SKIP
   void skip() async {
 
-    final prefs = await SharedPreferences.getInstance();
+    final prefs =
+    await SharedPreferences
+        .getInstance();
 
     await prefs.setBool(
+
       AppKeys.seenOnboarding,
+
       true,
     );
 
     Navigator.pushReplacementNamed(
+
       context,
+
       RoutesName.login,
     );
   }
@@ -68,21 +93,37 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   Widget dot(int index) {
 
     return AnimatedContainer(
-      duration: const Duration(milliseconds: 300),
 
-      margin: const EdgeInsets.symmetric(horizontal: 4),
+      duration:
+      const Duration(
+        milliseconds: 300,
+      ),
 
-      width: currentIndex == index ? 18 : 7,
+      margin:
+      const EdgeInsets.symmetric(
+        horizontal: 4,
+      ),
+
+      width:
+      currentIndex == index
+          ? 18
+          : 7,
 
       height: 7,
 
       decoration: BoxDecoration(
 
-        color: currentIndex == index
+        color:
+        currentIndex == index
+
             ? AppColors.primary
+
             : Colors.grey.shade300,
 
-        borderRadius: BorderRadius.circular(10),
+        borderRadius:
+        BorderRadius.circular(
+          10,
+        ),
       ),
     );
   }
@@ -92,14 +133,17 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
     return Scaffold(
 
-      backgroundColor: AppColors.background,
+      backgroundColor:
+      AppColors.background,
 
       body: SafeArea(
+
         child: Column(
           children: [
 
             /// PAGES
             Expanded(
+
               child: PageView(
 
                 controller: controller,
@@ -107,9 +151,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 onPageChanged: (index) {
 
                   setState(() {
+
                     currentIndex = index;
                   });
-
                 },
 
                 children: const [
@@ -119,14 +163,16 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   OnboardingInsightsScreen(),
 
                   OnboardingGetStartedScreen(),
-
                 ],
               ),
             ),
 
             /// DOTS
             Row(
-              mainAxisAlignment: MainAxisAlignment.center,
+
+              mainAxisAlignment:
+              MainAxisAlignment.center,
+
               children: [
 
                 dot(0),
@@ -134,7 +180,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 dot(1),
 
                 dot(2),
-
               ],
             ),
 
@@ -142,7 +187,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
             /// BUTTONS
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
+
+              padding:
+              const EdgeInsets.symmetric(
+                horizontal: 20,
+              ),
 
               child: Row(
                 children: [
@@ -153,10 +202,16 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     onPressed: skip,
 
                     child: const Text(
+
                       "Skip",
 
                       style: TextStyle(
-                        color: AppColors.grey,
+
+                        color:
+                        AppColors.grey,
+
+                        fontWeight:
+                        FontWeight.w700,
                       ),
                     ),
                   ),
@@ -164,28 +219,23 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   const Spacer(),
 
                   /// NEXT BUTTON
-                  ElevatedButton(
+                  SizedBox(
 
-                    style: ElevatedButton.styleFrom(
+                    width: 120,
 
-                      backgroundColor: AppColors.primary,
+                    child: AppButton(
 
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 24,
-                        vertical: 12,
-                      ),
-
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                    ),
-
-                    onPressed: nextPage,
-
-                    child: Text(
+                      text:
                       currentIndex == 2
+
                           ? "Start"
+
                           : "Next",
+
+                      onPressed:
+                      nextPage,
+
+                      height: 50,
                     ),
                   ),
                 ],

@@ -1,5 +1,7 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../models/user_model.dart';
+
 import 'pref_keys.dart';
 
 class AppPreferences {
@@ -15,9 +17,9 @@ class AppPreferences {
         .getInstance();
   }
 
-  /// =========================
+
   /// ONBOARDING
-  /// =========================
+
 
   static bool getSeenOnboarding() {
 
@@ -37,9 +39,9 @@ class AppPreferences {
     );
   }
 
-  /// =========================
+
   /// TOKEN
-  /// =========================
+
 
   static String getToken() {
 
@@ -58,9 +60,9 @@ class AppPreferences {
     );
   }
 
-  /// =========================
+
   /// LOGIN
-  /// =========================
+
 
   static bool isLoggedIn() {
 
@@ -79,9 +81,9 @@ class AppPreferences {
     );
   }
 
-  /// =========================
+
   /// USER DATA
-  /// =========================
+
 
   static String getGender() {
 
@@ -186,9 +188,58 @@ class AppPreferences {
     );
   }
 
-  /// =========================
+
+  /// USER MODEL
+
+
+  static Future<void> saveUser(
+      UserModel user) async {
+
+    await setGender(
+      user.gender,
+    );
+
+    await setAge(
+      user.age,
+    );
+
+    await setHeight(
+      user.height,
+    );
+
+    await setWeight(
+      user.weight,
+    );
+
+    await setGoal(
+      user.goal,
+    );
+
+    await setLifestyle(
+      user.lifestyle,
+    );
+  }
+
+  static UserModel getUser() {
+
+    return UserModel(
+
+      gender: getGender(),
+
+      age: getAge(),
+
+      height: getHeight(),
+
+      weight: getWeight(),
+
+      goal: getGoal(),
+
+      lifestyle: getLifestyle(),
+    );
+  }
+
   /// LANGUAGE
-  /// =========================
+
 
   static String getLanguageCode() {
 
@@ -208,9 +259,7 @@ class AppPreferences {
     );
   }
 
-  /// =========================
   /// CLEAR
-  /// =========================
 
   static Future<void> clear() async {
 
