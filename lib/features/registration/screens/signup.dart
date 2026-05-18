@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../core/constants/colors.dart';
 import '../../../core/constants/routes_name.dart';
-import '../../../core/constants/app_keys.dart';
 import '../../../core/validators/app_validator.dart';
 
 import '../../../core/widgets/app_button.dart';
 import '../../../core/widgets/app_text_field.dart';
+
+import '../../../core/services/auth_service.dart';
 
 class SignupScreen extends StatefulWidget {
 
@@ -23,6 +23,9 @@ class _SignupScreenState
 
   final _formKey =
   GlobalKey<FormState>();
+
+  final AuthService _authService =
+  AuthService();
 
   bool isChecked = false;
 
@@ -560,145 +563,62 @@ class _SignupScreenState
                               return;
                             }
 
-                            final prefs =
-                            await SharedPreferences
-                                .getInstance();
+                            try {
 
-                            await prefs
-                                .setString(
+                              await _authService.register(
 
-                              AppKeys
-                                  .token,
+                                userName:
+                                nameController.text,
 
-                              '123',
-                            );
+                                email:
+                                emailController.text,
 
-                            Navigator
-                                .pushReplacementNamed(
+                                password:
+                                passwordController.text,
 
-                              context,
+                                age: 20,
+                              );
 
-                              RoutesName
-                                  .collectData,
-                            );
+                              if (!mounted) return;
+
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(
+
+                                const SnackBar(
+
+                                  content: Text(
+                                    'Account Created Successfully',
+                                  ),
+                                ),
+                              );
+
+                              Navigator
+                                  .pushReplacementNamed(
+
+                                context,
+
+                                RoutesName
+                                    .collectData,
+                              );
+
+                            } catch (e) {
+
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(
+
+                                SnackBar(
+
+                                  content:
+                                  Text(e.toString()),
+                                ),
+                              );
+                            }
                           }
                         },
                       ),
 
                       const SizedBox(
                         height: 28,
-                      ),
-
-                      /// DIVIDER
-                      Row(
-                        children: const [
-
-                          Expanded(
-                            child:
-                            Divider(),
-                          ),
-
-                          Padding(
-
-                            padding:
-                            EdgeInsets
-                                .symmetric(
-                              horizontal:
-                              10,
-                            ),
-
-                            child: Text(
-                              "or continue with",
-                            ),
-                          ),
-
-                          Expanded(
-                            child:
-                            Divider(),
-                          ),
-                        ],
-                      ),
-
-                      const SizedBox(
-                        height: 24,
-                      ),
-
-                      /// GOOGLE BUTTON
-                      Container(
-
-                        width:
-                        double.infinity,
-
-                        padding:
-                        const EdgeInsets
-                            .symmetric(
-                          vertical: 16,
-                        ),
-
-                        decoration:
-                        BoxDecoration(
-
-                          color:
-                          AppColors
-                              .white,
-
-                          borderRadius:
-                          BorderRadius
-                              .circular(
-                            20,
-                          ),
-
-                          border:
-                          Border.all(
-
-                            color: Colors
-                                .grey
-                                .shade300,
-                          ),
-                        ),
-
-                        child:
-                        const Center(
-
-                          child: Row(
-
-                            mainAxisAlignment:
-                            MainAxisAlignment
-                                .center,
-
-                            children: [
-
-                              Icon(
-
-                                Icons
-                                    .g_mobiledata,
-
-                                size: 32,
-                              ),
-
-                              SizedBox(
-                                width: 8,
-                              ),
-
-                              Text(
-
-                                "Continue with Google",
-
-                                style:
-                                TextStyle(
-
-                                  fontWeight:
-                                  FontWeight
-                                      .w700,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-
-                      const SizedBox(
-                        height: 30,
                       ),
 
                       /// LOGIN

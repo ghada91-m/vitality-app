@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../core/constants/colors.dart';
 import '../../../core/constants/routes_name.dart';
-import '../../../core/constants/app_keys.dart';
 import '../../../core/validators/app_validator.dart';
 
 import '../../../core/widgets/app_button.dart';
 import '../../../core/widgets/app_text_field.dart';
+
+import '../../../core/services/auth_service.dart';
 
 class LoginScreen extends StatefulWidget {
 
@@ -23,6 +23,9 @@ class _LoginScreenState
 
   final _formKey =
   GlobalKey<FormState>();
+
+  final AuthService _authService =
+  AuthService();
 
   String email = '';
 
@@ -317,26 +320,50 @@ class _LoginScreenState
                           .currentState!
                           .validate()) {
 
-                        final prefs =
-                        await SharedPreferences
-                            .getInstance();
+                        try {
 
-                        await prefs
-                            .setString(
+                          await _authService.login(
 
-                          AppKeys.token,
+                            email: email,
 
-                          '123',
-                        );
+                            password: password,
+                          );
 
-                        Navigator
-                            .pushReplacementNamed(
+                          if (!mounted) return;
 
-                          context,
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(
 
-                          RoutesName
-                              .collectData,
-                        );
+                            const SnackBar(
+
+                              content:
+                              Text(
+                                  'Login Success'),
+                            ),
+                          );
+
+                          Navigator
+                              .pushReplacementNamed(
+
+                            context,
+
+                            RoutesName
+                                .collectData,
+                          );
+
+                        } catch (e) {
+
+                          ScaffoldMessenger.of(context)
+                              .showSnackBar(
+
+                            SnackBar(
+
+                              content:
+                              Text(
+                                  e.toString()),
+                            ),
+                          );
+                        }
                       }
                     },
                   ),

@@ -7,6 +7,9 @@ import '../../../core/validators/app_validator.dart';
 import '../../../core/widgets/app_button.dart';
 import '../../../core/widgets/app_text_field.dart';
 
+import '../../../core/services/api_endpoints.dart';
+import '../../../core/services/api_service.dart';
+
 class ForgotPasswordScreen extends StatefulWidget {
 
   const ForgotPasswordScreen({super.key});
@@ -19,47 +22,100 @@ class ForgotPasswordScreen extends StatefulWidget {
 class _ForgotPasswordScreenState
     extends State<ForgotPasswordScreen> {
 
-  final _formKey = GlobalKey<FormState>();
+  final _formKey =
+  GlobalKey<FormState>();
 
-  final TextEditingController emailController =
+  final TextEditingController
+  emailController =
   TextEditingController();
 
-  /// SEND RESET LINK
-  void sendResetLink() {
+  final ApiService _apiService =
+  ApiService();
 
-    if (!_formKey.currentState!.validate()) {
+  bool isLoading = false;
+
+  /// SEND RESET LINK
+  Future<void> sendResetLink() async {
+
+    if (!_formKey.currentState!
+        .validate()) {
+
       return;
     }
 
-    ScaffoldMessenger.of(context).showSnackBar(
+    setState(() {
+      isLoading = true;
+    });
 
-      const SnackBar(
+    try {
 
-        content: Text(
-          "Reset link sent successfully",
+      await _apiService.dio.post(
+
+        ApiEndpoints.forgotPassword,
+
+        data: {
+
+          'email':
+          emailController.text,
+        },
+      );
+
+      if (!mounted) return;
+
+      ScaffoldMessenger.of(context)
+          .showSnackBar(
+
+        const SnackBar(
+
+          content: Text(
+            "Reset code sent successfully",
+          ),
+
+          backgroundColor:
+          AppColors.primary,
         ),
+      );
 
-        backgroundColor:
-        AppColors.primary,
-      ),
-    );
+      Future.delayed(
 
-    Future.delayed(
+        const Duration(seconds: 2),
 
-      const Duration(seconds: 2),
+            () {
 
-          () {
+          if (!mounted) return;
 
-        if (!mounted) return;
+          Navigator
+              .pushReplacementNamed(
 
-        Navigator.pushReplacementNamed(
+            context,
 
-          context,
+            RoutesName.login,
+          );
+        },
+      );
 
-          RoutesName.login,
-        );
-      },
-    );
+    } catch (e) {
+
+      ScaffoldMessenger.of(context)
+          .showSnackBar(
+
+        SnackBar(
+
+          content:
+          Text(e.toString()),
+        ),
+      );
+
+    } finally {
+
+      if (mounted) {
+
+        setState(() {
+
+          isLoading = false;
+        });
+      }
+    }
   }
 
   @override
@@ -82,9 +138,11 @@ class _ForgotPasswordScreenState
 
               gradient: LinearGradient(
 
-                begin: Alignment.topCenter,
+                begin:
+                Alignment.topCenter,
 
-                end: Alignment.bottomCenter,
+                end:
+                Alignment.bottomCenter,
 
                 colors: [
 
@@ -119,7 +177,9 @@ class _ForgotPasswordScreenState
 
                   children: [
 
-                    const SizedBox(height: 14),
+                    const SizedBox(
+                      height: 14,
+                    ),
 
                     /// HEADER
                     Row(
@@ -161,7 +221,9 @@ class _ForgotPasswordScreenState
                           child: IconButton(
 
                             onPressed: () {
-                              Navigator.pop(context);
+                              Navigator.pop(
+                                context,
+                              );
                             },
 
                             icon: const Icon(
@@ -194,11 +256,15 @@ class _ForgotPasswordScreenState
 
                         const Spacer(),
 
-                        const SizedBox(width: 48),
+                        const SizedBox(
+                          width: 48,
+                        ),
                       ],
                     ),
 
-                    const SizedBox(height: 36),
+                    const SizedBox(
+                      height: 36,
+                    ),
 
                     /// SECURITY BADGE
                     Container(
@@ -239,7 +305,9 @@ class _ForgotPasswordScreenState
                       ),
                     ),
 
-                    const SizedBox(height: 28),
+                    const SizedBox(
+                      height: 28,
+                    ),
 
                     /// TITLE
                     const Text(
@@ -260,7 +328,9 @@ class _ForgotPasswordScreenState
                       ),
                     ),
 
-                    const SizedBox(height: 14),
+                    const SizedBox(
+                      height: 14,
+                    ),
 
                     /// DESCRIPTION
                     const Text(
@@ -278,7 +348,9 @@ class _ForgotPasswordScreenState
                       ),
                     ),
 
-                    const SizedBox(height: 40),
+                    const SizedBox(
+                      height: 40,
+                    ),
 
                     /// EMAIL LABEL
                     const Text(
@@ -297,7 +369,9 @@ class _ForgotPasswordScreenState
                       ),
                     ),
 
-                    const SizedBox(height: 10),
+                    const SizedBox(
+                      height: 10,
+                    ),
 
                     /// EMAIL FIELD
                     AppTextField(
@@ -320,117 +394,30 @@ class _ForgotPasswordScreenState
                           .validateEmail,
                     ),
 
-                    const SizedBox(height: 30),
+                    const SizedBox(
+                      height: 30,
+                    ),
 
                     /// SEND BUTTON
                     AppButton(
 
                       text:
-                      "Send Reset Link",
+                      isLoading
+                          ? "Loading..."
+                          : "Send Reset Link",
 
-                      onPressed:
-                      sendResetLink,
+                      onPressed: () {
+
+                        if (!isLoading) {
+
+                          sendResetLink();
+                        }
+                      },
                     ),
 
-                    const SizedBox(height: 50),
-
-                    /// INFO CARD
-                    Container(
-
-                      width: double.infinity,
-
-                      padding:
-                      const EdgeInsets.all(
-                        22,
-                      ),
-
-                      decoration: BoxDecoration(
-
-                        color:
-                        AppColors.white,
-
-                        borderRadius:
-                        BorderRadius.circular(
-                          28,
-                        ),
-
-                        boxShadow: [
-
-                          BoxShadow(
-
-                            color:
-                            Colors.black
-                                .withValues(
-                              alpha: 0.03,
-                            ),
-
-                            blurRadius: 18,
-
-                            offset:
-                            const Offset(
-                              0,
-                              8,
-                            ),
-                          ),
-                        ],
-                      ),
-
-                      child: const Column(
-
-                        children: [
-
-                          Icon(
-
-                            Icons
-                                .shield_outlined,
-
-                            color:
-                            AppColors.primary,
-
-                            size: 34,
-                          ),
-
-                          SizedBox(height: 16),
-
-                          Text(
-
-                            "Your account security is our top priority.",
-
-                            textAlign:
-                            TextAlign.center,
-
-                            style: TextStyle(
-
-                              fontWeight:
-                              FontWeight.w800,
-
-                              color:
-                              AppColors.textDark,
-                            ),
-                          ),
-
-                          SizedBox(height: 10),
-
-                          Text(
-
-                            "All reset requests are protected with secure encryption and authentication methods.",
-
-                            textAlign:
-                            TextAlign.center,
-
-                            style: TextStyle(
-
-                              color:
-                              AppColors.textLight,
-
-                              height: 1.5,
-                            ),
-                          ),
-                        ],
-                      ),
+                    const SizedBox(
+                      height: 50,
                     ),
-
-                    const SizedBox(height: 40),
 
                     /// LOGIN
                     Center(
@@ -486,7 +473,9 @@ class _ForgotPasswordScreenState
                       ),
                     ),
 
-                    const SizedBox(height: 30),
+                    const SizedBox(
+                      height: 30,
+                    ),
                   ],
                 ),
               ),
