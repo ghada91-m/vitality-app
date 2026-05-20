@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+/// ROUTES
 import 'core/constants/routes_name.dart';
 
 /// STORAGE
@@ -17,14 +18,13 @@ import 'features/registration/screens/forget.dart';
 /// COLLECT DATA
 import 'features/collect_data/screens/collect_data_screen.dart';
 
-/// HOME
-import 'screens/home.dart';
+/// MAIN NAVIGATION
+import 'features/navigation/screens/main_screen.dart';
 
 void main() async {
 
   /// IMPORTANT
-  WidgetsFlutterBinding
-      .ensureInitialized();
+  WidgetsFlutterBinding.ensureInitialized();
 
   /// INIT SHARED PREFERENCES
   await AppPreferences.init();
@@ -71,9 +71,9 @@ class VitalityApp extends StatelessWidget {
         RoutesName.collectData: (context) =>
         const CollectDataScreen(),
 
-        /// HOME
+        /// HOME WITH NAVIGATION
         RoutesName.home: (context) =>
-        const HomeScreen(),
+        const MainScreen(),
       },
     );
   }
