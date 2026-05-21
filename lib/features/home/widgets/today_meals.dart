@@ -29,7 +29,7 @@ class TodayMeals extends StatelessWidget {
 
               style: TextStyle(
 
-                fontSize: 20,
+                fontSize: 22,
 
                 fontWeight:
                 FontWeight.bold,
@@ -54,46 +54,80 @@ class TodayMeals extends StatelessWidget {
 
         const SizedBox(height: 18),
 
-        const _MealCard(
+        const MealCard(
 
-          title: "Avocado Toast & Egg",
+          image:
+          "assets/images/avocado.png",
 
-          subtitle: "BREAKFAST",
+          title:
+          "Avocado Toast & Egg",
 
-          calories: "320 KCAL",
+          mealType:
+          "BREAKFAST",
 
-          color: Color(0xffFFE2D2),
+          calories:
+          "320 KCAL",
+
+          protein:
+          "24g",
+
+          carbs:
+          "18g",
+
+          color:
+          Color(0xffFFE6D8),
         ),
 
-        SizedBox(height: 14),
+        SizedBox(height: 16),
 
-        const _MealCard(
+        const MealCard(
 
-          title: "Grilled Salmon Salad",
+          image:
+          "assets/images/salmon.png",
 
-          subtitle: "LUNCH",
+          title:
+          "Grilled Salmon Salad",
 
-          calories: "540 KCAL",
+          mealType:
+          "LUNCH",
 
-          color: Color(0xffDDF4E4),
+          calories:
+          "540 KCAL",
+
+          protein:
+          "42g",
+
+          carbs:
+          "26g",
+
+          color:
+          Color(0xffDDF4E5),
         ),
       ],
     );
   }
 }
 
-class _MealCard extends StatelessWidget {
+class MealCard extends StatelessWidget {
 
+  final String image;
   final String title;
-  final String subtitle;
+  final String mealType;
   final String calories;
+  final String protein;
+  final String carbs;
   final Color color;
 
-  const _MealCard({
+  const MealCard({
 
+    super.key,
+
+    required this.image,
     required this.title,
-    required this.subtitle,
+    required this.mealType,
     required this.calories,
+    required this.protein,
+    required this.carbs,
     required this.color,
   });
 
@@ -109,35 +143,55 @@ class _MealCard extends StatelessWidget {
         color: Colors.white,
 
         borderRadius:
-        BorderRadius.circular(24),
+        BorderRadius.circular(28),
+
+        boxShadow: [
+
+          BoxShadow(
+
+            color:
+            Colors.black.withOpacity(0.04),
+
+            blurRadius: 18,
+
+            offset: const Offset(0, 10),
+          ),
+        ],
       ),
 
       child: Row(
 
         children: [
 
+          /// IMAGE
           Container(
 
-            width: 64,
-            height: 64,
+            width: 82,
+            height: 82,
 
             decoration: BoxDecoration(
 
               color: color,
 
               borderRadius:
-              BorderRadius.circular(18),
+              BorderRadius.circular(22),
             ),
 
-            child: const Icon(
-              Icons.restaurant,
-              size: 32,
-              color: AppColors.primary,
+            child: Padding(
+
+              padding:
+              const EdgeInsets.all(10),
+
+              child: Image.asset(
+                image,
+                fit: BoxFit.contain,
+              ),
             ),
           ),
 
           const SizedBox(width: 16),
 
+          /// INFO
           Expanded(
 
             child: Column(
@@ -149,7 +203,7 @@ class _MealCard extends StatelessWidget {
 
                 Text(
 
-                  subtitle,
+                  mealType,
 
                   style: const TextStyle(
 
@@ -170,30 +224,118 @@ class _MealCard extends StatelessWidget {
 
                   style: const TextStyle(
 
-                    fontSize: 16,
+                    fontSize: 17,
 
                     fontWeight:
-                    FontWeight.w600,
+                    FontWeight.w700,
                   ),
+                ),
+
+                const SizedBox(height: 10),
+
+                Row(
+
+                  children: [
+
+                    _MacroChip(
+                      label: protein,
+                      color:
+                      AppColors.primary,
+                    ),
+
+                    const SizedBox(width: 8),
+
+                    _MacroChip(
+                      label: carbs,
+                      color: Colors.orange,
+                    ),
+                  ],
                 ),
               ],
             ),
           ),
 
-          Text(
+          /// CALORIES
+          Column(
 
-            calories,
+            crossAxisAlignment:
+            CrossAxisAlignment.end,
 
-            style: const TextStyle(
+            children: [
 
-              color:
-              AppColors.primary,
+              const Icon(
 
-              fontWeight:
-              FontWeight.bold,
-            ),
+                Icons.more_horiz,
+
+                color: Colors.grey,
+              ),
+
+              const SizedBox(height: 18),
+
+              Text(
+
+                calories,
+
+                style: const TextStyle(
+
+                  color:
+                  AppColors.primary,
+
+                  fontWeight:
+                  FontWeight.bold,
+                ),
+              ),
+            ],
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _MacroChip extends StatelessWidget {
+
+  final String label;
+  final Color color;
+
+  const _MacroChip({
+
+    required this.label,
+    required this.color,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+
+    return Container(
+
+      padding: const EdgeInsets.symmetric(
+        horizontal: 10,
+        vertical: 5,
+      ),
+
+      decoration: BoxDecoration(
+
+        color:
+        color.withOpacity(0.12),
+
+        borderRadius:
+        BorderRadius.circular(20),
+      ),
+
+      child: Text(
+
+        label,
+
+        style: TextStyle(
+
+          color: color,
+
+          fontWeight:
+          FontWeight.bold,
+
+          fontSize: 11,
+        ),
       ),
     );
   }

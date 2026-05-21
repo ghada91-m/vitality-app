@@ -1,85 +1,74 @@
 import 'package:flutter/material.dart';
-
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
 import '../../../core/constants/colors.dart';
 
 class CaloriesCircle extends StatelessWidget {
-  const CaloriesCircle({super.key});
+  final int remainingCalories;
+  final int eatenCalories;
+  final int burnedCalories;
+  final double progress;
+
+  const CaloriesCircle({
+    super.key,
+    required this.remainingCalories,
+    required this.eatenCalories,
+    required this.burnedCalories,
+    required this.progress,
+  });
 
   @override
   Widget build(BuildContext context) {
-
     return CircularPercentIndicator(
-
       radius: 115,
-
       lineWidth: 16,
-
-      percent: 0.72,
-
+      percent: progress,
       animation: true,
-
-      circularStrokeCap:
-      CircularStrokeCap.round,
-
-      progressColor:
-      AppColors.primary,
-
-      backgroundColor:
-      const Color(0xffE5E7E6),
-
+      animationDuration: 700,
+      circularStrokeCap: CircularStrokeCap.round,
+      progressColor: AppColors.primary,
+      backgroundColor: const Color(0xffE5E7E6),
       center: Column(
-
-        mainAxisAlignment:
-        MainAxisAlignment.center,
-
-        children: const [
-
-          Text(
-            "1,640",
-
-            style: TextStyle(
-              fontSize: 40,
-              fontWeight:
-              FontWeight.bold,
-
-              color:
-              AppColors.textDark,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          AnimatedSwitcher(
+            duration: const Duration(milliseconds: 350),
+            child: Text(
+              remainingCalories.toString(),
+              key: ValueKey(remainingCalories),
+              style: const TextStyle(
+                fontSize: 40,
+                fontWeight: FontWeight.bold,
+                color: AppColors.textDark,
+              ),
             ),
           ),
 
-          SizedBox(height: 4),
+          const SizedBox(height: 4),
 
-          Text(
+          const Text(
             "KCAL REMAINING",
-
             style: TextStyle(
               fontSize: 10,
-              fontWeight:
-              FontWeight.bold,
+              fontWeight: FontWeight.bold,
             ),
           ),
 
-          SizedBox(height: 14),
+          const SizedBox(height: 14),
 
           Row(
-
-            mainAxisAlignment:
-            MainAxisAlignment.center,
-
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-
               _CaloriesInfo(
-                value: "420",
+                value: eatenCalories.toString(),
                 label: "EATEN",
                 color: AppColors.primary,
               ),
 
-              SizedBox(width: 25),
+              const SizedBox(width: 25),
 
               _CaloriesInfo(
-                value: "120",
+                value: burnedCalories.toString(),
                 label: "BURNED",
                 color: Colors.orange,
               ),
@@ -92,13 +81,11 @@ class CaloriesCircle extends StatelessWidget {
 }
 
 class _CaloriesInfo extends StatelessWidget {
-
   final String value;
   final String label;
   final Color color;
 
   const _CaloriesInfo({
-
     required this.value,
     required this.label,
     required this.color,
@@ -106,26 +93,22 @@ class _CaloriesInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Column(
-
       children: [
-
-        Text(
-          value,
-
-          style: TextStyle(
-            fontSize: 12,
-            fontWeight:
-            FontWeight.bold,
-
-            color: color,
+        AnimatedSwitcher(
+          duration: const Duration(milliseconds: 300),
+          child: Text(
+            value,
+            key: ValueKey(value),
+            style: TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.bold,
+              color: color,
+            ),
           ),
         ),
-
         Text(
           label,
-
           style: const TextStyle(
             fontSize: 8,
             color: Colors.grey,

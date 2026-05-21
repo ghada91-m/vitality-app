@@ -10,63 +10,92 @@ import '../widgets/macros_card.dart';
 import '../widgets/health_stats.dart';
 import '../widgets/today_meals.dart';
 
-class HomeScreen extends StatelessWidget {
-
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
   @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  final int goalCalories = 2200;
+  int eatenCalories = 420;
+  int burnedCalories = 120;
+
+  int get remainingCalories {
+    final remaining = goalCalories - eatenCalories + burnedCalories;
+    return remaining < 0 ? 0 : remaining;
+  }
+
+  double get caloriesProgress {
+    final progress = eatenCalories / goalCalories;
+    return progress > 1 ? 1 : progress;
+  }
+
+  void addMealCalories() {
+    setState(() {
+      eatenCalories += 180;
+    });
+  }
+
+  void removeMealCalories() {
+    setState(() {
+      if (eatenCalories >= 180) {
+        eatenCalories -= 180;
+      }
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-
     return Scaffold(
-
-      backgroundColor:
-      AppColors.background,
-
+      backgroundColor: AppColors.background,
       body: SafeArea(
-
         child: SingleChildScrollView(
-
           padding: const EdgeInsets.symmetric(
             horizontal: 20,
             vertical: 16,
           ),
-
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const HomeHeader(),
 
-            crossAxisAlignment:
-            CrossAxisAlignment.start,
-
-            children: const [
-
-              HomeHeader(),
-
-              SizedBox(height: 28),
+              const SizedBox(height: 28),
 
               Center(
-                child: CaloriesCircle(),
+                child: CaloriesCircle(
+                  remainingCalories: remainingCalories,
+                  eatenCalories: eatenCalories,
+                  burnedCalories: burnedCalories,
+                  progress: caloriesProgress,
+                ),
               ),
 
-              SizedBox(height: 28),
+              const SizedBox(height: 28),
 
-              QuickActions(),
+              QuickActions(
+                onAddMeal: addMealCalories,
+                onRemoveMeal: removeMealCalories,
+              ),
 
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
 
-              HydrationCard(),
+              const HydrationCard(),
 
-              SizedBox(height: 18),
+              const SizedBox(height: 18),
 
-              MacrosCard(),
+              const MacrosCard(),
 
-              SizedBox(height: 18),
+              const SizedBox(height: 18),
 
-              HealthStats(),
+              const HealthStats(),
 
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
 
-              TodayMeals(),
+              const TodayMeals(),
 
-              SizedBox(height: 40),
+              const SizedBox(height: 40),
             ],
           ),
         ),
