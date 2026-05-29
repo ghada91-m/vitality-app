@@ -16,10 +16,9 @@ class _HydrationCardState
 
   int cups = 4;
 
-  final int targetCups = 7;
+  final int targetCups = 8;
 
-  double get liters =>
-      cups * 0.3;
+  double get liters => cups * 0.3125;
 
   void addCup() {
 
@@ -51,30 +50,37 @@ class _HydrationCardState
       duration:
       const Duration(milliseconds: 300),
 
-      padding: const EdgeInsets.all(18),
+      padding:
+      const EdgeInsets.all(20),
 
       decoration: BoxDecoration(
 
         color: AppColors.lightGreen,
 
         borderRadius:
-        BorderRadius.circular(28),
+        BorderRadius.circular(30),
 
         boxShadow: [
 
           BoxShadow(
 
             color:
-            AppColors.primary.withOpacity(0.08),
+            AppColors.primary.withValues(
+              alpha: 0.08,
+            ),
 
             blurRadius: 20,
 
-            offset: const Offset(0, 10),
+            offset:
+            const Offset(0, 10),
           ),
         ],
       ),
 
       child: Column(
+
+        crossAxisAlignment:
+        CrossAxisAlignment.start,
 
         children: [
 
@@ -99,10 +105,10 @@ class _HydrationCardState
 
                     style: TextStyle(
 
-                      fontSize: 19,
+                      fontSize: 20,
 
                       fontWeight:
-                      FontWeight.bold,
+                      FontWeight.w800,
                     ),
                   ),
 
@@ -110,33 +116,45 @@ class _HydrationCardState
 
                   Text(
 
-                    "Target 2.1 Liters",
+                    "Daily water target",
 
                     style: TextStyle(
+
                       color: Colors.grey,
+
                       fontSize: 12,
                     ),
                   ),
                 ],
               ),
 
-              AnimatedSwitcher(
+              Container(
 
-                duration:
-                const Duration(milliseconds: 300),
+                padding:
+                const EdgeInsets.symmetric(
+
+                  horizontal: 14,
+                  vertical: 8,
+                ),
+
+                decoration: BoxDecoration(
+
+                  color: Colors.white,
+
+                  borderRadius:
+                  BorderRadius.circular(20),
+                ),
 
                 child: Text(
 
                   "${liters.toStringAsFixed(1)} L",
 
-                  key: ValueKey(liters),
-
                   style: const TextStyle(
 
                     fontWeight:
-                    FontWeight.bold,
+                    FontWeight.w800,
 
-                    fontSize: 22,
+                    fontSize: 16,
 
                     color:
                     AppColors.primary,
@@ -146,79 +164,108 @@ class _HydrationCardState
             ],
           ),
 
-          const SizedBox(height: 22),
+          const SizedBox(height: 24),
 
           /// WATER CUPS
           Row(
 
             children: [
 
-              ...List.generate(
+              Expanded(
 
-                targetCups,
+                child:
+                SingleChildScrollView(
 
-                    (index) {
+                  scrollDirection:
+                  Axis.horizontal,
 
-                  final filled =
-                      index < cups;
+                  child: Row(
 
-                  return Padding(
+                    children: List.generate(
 
-                    padding:
-                    const EdgeInsets.only(
-                        right: 8),
+                      targetCups,
 
-                    child: AnimatedContainer(
+                          (index) {
 
-                      duration:
-                      const Duration(
-                          milliseconds: 250),
+                        final filled =
+                            index < cups;
 
-                      child: Icon(
+                        return Padding(
 
-                        filled
-                            ? Icons.local_drink
-                            : Icons.local_drink_outlined,
+                          padding:
+                          const EdgeInsets.only(
+                            right: 10,
+                          ),
 
-                        color: filled
-                            ? AppColors.primary
-                            : Colors.grey.shade400,
+                          child:
+                          AnimatedContainer(
 
-                        size: 28,
-                      ),
+                            duration:
+                            const Duration(
+                              milliseconds: 250,
+                            ),
+
+                            width: 42,
+
+                            height: 42,
+
+                            decoration:
+                            BoxDecoration(
+
+                              color: filled
+                                  ? AppColors.primary
+                                  : Colors.white,
+
+                              borderRadius:
+                              BorderRadius.circular(
+                                14,
+                              ),
+                            ),
+
+                            child: Icon(
+
+                              Icons.local_drink,
+
+                              color: filled
+                                  ? Colors.white
+                                  : Colors.grey,
+
+                              size: 22,
+                            ),
+                          ),
+                        );
+                      },
                     ),
-                  );
-                },
+                  ),
+                ),
               ),
 
-              const Spacer(),
+              const SizedBox(width: 12),
 
               /// REMOVE BUTTON
-              GestureDetector(
+              InkWell(
+
+                borderRadius:
+                BorderRadius.circular(
+                  14,
+                ),
 
                 onTap: removeCup,
 
                 child: Container(
 
-                  padding:
-                  const EdgeInsets.all(10),
+                  width: 44,
+
+                  height: 44,
 
                   decoration: BoxDecoration(
 
                     color: Colors.white,
 
-                    shape: BoxShape.circle,
-
-                    boxShadow: [
-
-                      BoxShadow(
-
-                        color:
-                        Colors.black.withOpacity(0.05),
-
-                        blurRadius: 10,
-                      ),
-                    ],
+                    borderRadius:
+                    BorderRadius.circular(
+                      14,
+                    ),
                   ),
 
                   child: const Icon(
@@ -234,48 +281,46 @@ class _HydrationCardState
               const SizedBox(width: 10),
 
               /// ADD BUTTON
-              GestureDetector(
+              InkWell(
+
+                borderRadius:
+                BorderRadius.circular(
+                  14,
+                ),
 
                 onTap: addCup,
 
                 child: Container(
 
-                  padding:
-                  const EdgeInsets.all(10),
+                  width: 44,
+
+                  height: 44,
 
                   decoration: BoxDecoration(
 
-                    color: Colors.white,
+                    color:
+                    AppColors.primary,
 
-                    shape: BoxShape.circle,
-
-                    boxShadow: [
-
-                      BoxShadow(
-
-                        color:
-                        Colors.black.withOpacity(0.05),
-
-                        blurRadius: 10,
-                      ),
-                    ],
+                    borderRadius:
+                    BorderRadius.circular(
+                      14,
+                    ),
                   ),
 
                   child: const Icon(
 
                     Icons.add,
 
-                    color:
-                    AppColors.primary,
+                    color: Colors.white,
                   ),
                 ),
               ),
             ],
           ),
 
-          const SizedBox(height: 18),
+          const SizedBox(height: 22),
 
-          /// PROGRESS BAR
+          /// PROGRESS
           ClipRRect(
 
             borderRadius:
@@ -285,7 +330,7 @@ class _HydrationCardState
 
               value: cups / targetCups,
 
-              minHeight: 8,
+              minHeight: 9,
 
               color: AppColors.primary,
 
