@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 /// ROUTES
 import 'core/constants/routes_name.dart';
 
 /// STORAGE
 import 'core/storage/app_preferences.dart';
+
+/// PROVIDERS
+import 'core/provider/progress_provider.dart';
 
 /// ONBOARDING
 import 'features/onboarding/screens/splash.dart';
@@ -22,31 +26,33 @@ import 'features/collect_data/screens/collect_data_screen.dart';
 import 'features/navigation/screens/main_screen.dart';
 
 void main() async {
-
-  /// IMPORTANT
   WidgetsFlutterBinding.ensureInitialized();
 
-  /// INIT SHARED PREFERENCES
   await AppPreferences.init();
 
-  runApp(const VitalityApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (_) => ProgressProvider(),
+        ),
+      ],
+      child: const VitalityApp(),
+    ),
+  );
 }
 
 class VitalityApp extends StatelessWidget {
-
   const VitalityApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-
     return MaterialApp(
-
       debugShowCheckedModeBanner: false,
 
       initialRoute: RoutesName.splash,
 
       routes: {
-
         /// SPLASH
         RoutesName.splash: (context) =>
         const SplashScreen(),
@@ -71,7 +77,7 @@ class VitalityApp extends StatelessWidget {
         RoutesName.collectData: (context) =>
         const CollectDataScreen(),
 
-        /// HOME WITH NAVIGATION
+        /// HOME
         RoutesName.home: (context) =>
         const MainScreen(),
       },

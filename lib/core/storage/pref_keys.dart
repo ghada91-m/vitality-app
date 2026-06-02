@@ -5,21 +5,36 @@ class PrefKeys {
       'seenOnboarding';
 
   /// AUTH
-  static const token = 'token';
+  static const token =
+      'token';
 
   static const isLoggedIn =
       'isLoggedIn';
 
   /// USER DATA
-  static const gender = 'gender';
+  static const name =
+      'name';
 
-  static const age = 'age';
+  static const email =
+      'email';
 
-  static const height = 'height';
+  static const imagePath =
+      'imagePath';
 
-  static const weight = 'weight';
+  static const gender =
+      'gender';
 
-  static const goal = 'goal';
+  static const age =
+      'age';
+
+  static const height =
+      'height';
+
+  static const weight =
+      'weight';
+
+  static const goal =
+      'goal';
 
   static const lifestyle =
       'lifestyle';

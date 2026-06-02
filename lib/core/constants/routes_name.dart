@@ -13,4 +13,6 @@ class RoutesName {
   static const collectData = '/collectData';
 
   static const home = '/home';
+
+  static const profile = '/profile';
 }
