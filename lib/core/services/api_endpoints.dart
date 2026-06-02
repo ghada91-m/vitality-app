@@ -12,4 +12,12 @@ class ApiEndpoints {
 
   static const String resetPassword =
       '/api/Authentication/reset-password';
+
+  // Profile
+  static const String profile =
+      '/api/Profile';
+
+  // Daily Log
+  static const String dailyLog =
+      '/api/DailyLog';
 }

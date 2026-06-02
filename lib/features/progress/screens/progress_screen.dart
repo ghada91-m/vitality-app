@@ -3,7 +3,10 @@ import 'package:provider/provider.dart';
 
 import '../../../core/constants/colors.dart';
 import '../../../core/provider/progress_provider.dart';
+import '../models/progress_model.dart';
 import '../widgets/bmi_card.dart';
+import '../widgets/goal_progress_card.dart';
+import '../widgets/health_score_card.dart';
 import '../widgets/weight_chart.dart';
 import '../widgets/week_review_card.dart';
 
@@ -19,7 +22,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
   void initState() {
     super.initState();
 
-    Future.microtask(() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<ProgressProvider>().loadProgress();
     });
   }
@@ -28,7 +31,6 @@ class _ProgressScreenState extends State<ProgressScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.background,
-
       body: SafeArea(
         child: Consumer<ProgressProvider>(
           builder: (context, provider, child) {
@@ -44,7 +46,6 @@ class _ProgressScreenState extends State<ProgressScreen> {
 
             return SingleChildScrollView(
               padding: const EdgeInsets.all(20),
-
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -69,9 +70,24 @@ class _ProgressScreenState extends State<ProgressScreen> {
 
                   const SizedBox(height: 24),
 
+                  HealthScoreCard(
+                    score: progress.healthScore,
+                  ),
+
+                  const SizedBox(height: 16),
+
                   BmiCard(
                     bmi: progress.bmi,
                     status: progress.status,
+                    healthScore: progress.healthScore,
+                  ),
+
+                  const SizedBox(height: 16),
+
+                  GoalProgressCard(
+                    currentWeight: progress.currentWeight,
+                    targetWeight: progress.targetWeight,
+                    progress: progress.weightGoalProgress,
                   ),
 
                   const SizedBox(height: 16),
@@ -79,10 +95,11 @@ class _ProgressScreenState extends State<ProgressScreen> {
                   Row(
                     children: [
                       Expanded(
-                        child: _StatCard(
+                        child: _ProgressStatCard(
                           icon: Icons.local_fire_department_rounded,
-                          title: "Burned",
-                          value: "${progress.caloriesBurned}",
+                          title: "Calories",
+                          current: progress.caloriesBurned,
+                          goal: progress.caloriesGoal,
                           unit: "kcal",
                         ),
                       ),
@@ -90,11 +107,12 @@ class _ProgressScreenState extends State<ProgressScreen> {
                       const SizedBox(width: 12),
 
                       Expanded(
-                        child: _StatCard(
+                        child: _ProgressStatCard(
                           icon: Icons.timer_rounded,
-                          title: "Active",
-                          value: "${progress.activeMinutes}",
-                          unit: "mins",
+                          title: "Activity",
+                          current: progress.activeMinutes,
+                          goal: progress.activeMinutesGoal,
+                          unit: "min",
                         ),
                       ),
                     ],
@@ -102,78 +120,14 @@ class _ProgressScreenState extends State<ProgressScreen> {
 
                   const SizedBox(height: 20),
 
-                  Container(
-                    padding: const EdgeInsets.all(18),
-                    decoration: BoxDecoration(
-                      color: AppColors.white,
-                      borderRadius: BorderRadius.circular(22),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          mainAxisAlignment:
-                          MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Column(
-                              crossAxisAlignment:
-                              CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "Weight Trend",
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w800,
-                                    color: AppColors.textDark,
-                                  ),
-                                ),
-
-                                SizedBox(height: 4),
-
-                                Text(
-                                  "-2.4kg this month",
-                                  style: TextStyle(
-                                    fontSize: 12,
-                                    color: AppColors.textLight,
-                                  ),
-                                ),
-                              ],
-                            ),
-
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 12,
-                                vertical: 6,
-                              ),
-                              decoration: BoxDecoration(
-                                color: AppColors.primary.withOpacity(0.10),
-                                borderRadius: BorderRadius.circular(20),
-                              ),
-                              child: const Text(
-                                "Week",
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w700,
-                                  color: AppColors.primary,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-
-                        const SizedBox(height: 18),
-
-                        WeightChart(
-                          weights: progress.weightHistory,
-                        ),
-                      ],
-                    ),
+                  _WeightTrendSection(
+                    progress: progress,
                   ),
 
                   const SizedBox(height: 20),
 
                   const Text(
-                    "Daily Insight",
+                    "AI Health Coach",
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w900,
@@ -184,32 +138,18 @@ class _ProgressScreenState extends State<ProgressScreen> {
                   const SizedBox(height: 12),
 
                   _InsightCard(
-                    text: _getInsight(progress.status),
+                    text: _getInsight(progress),
                   ),
 
                   const SizedBox(height: 20),
 
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text(
-                        "Week in Review",
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w900,
-                          color: AppColors.textDark,
-                        ),
-                      ),
-
-                      Text(
-                        "View History",
-                        style: TextStyle(
-                          fontSize: 13,
-                          fontWeight: FontWeight.w800,
-                          color: AppColors.primary,
-                        ),
-                      ),
-                    ],
+                  const Text(
+                    "Week in Review",
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w900,
+                      color: AppColors.textDark,
+                    ),
                   ),
 
                   const SizedBox(height: 12),
@@ -218,8 +158,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
                     workouts: progress.workoutsCompleted,
                     goal: progress.workoutGoal,
                     streak: progress.mealStreak,
-                    hydration: progress.hydrationPercent,
-                  ),
+                    hydration: progress.hydrationPercent.round(),                  ),
 
                   const SizedBox(height: 30),
                 ],
@@ -231,34 +170,50 @@ class _ProgressScreenState extends State<ProgressScreen> {
     );
   }
 
-  String _getInsight(String status) {
-    if (status == "Underweight") {
-      return "Your BMI is below the healthy range. Try increasing your daily calories with balanced meals.";
+  String _getInsight(ProgressModel progress) {
+    if (progress.hydrationPercent < 70) {
+      return "Your hydration level is below target. Try drinking more water today to support metabolism and energy.";
     }
 
-    if (status == "Overweight" || status == "Obese") {
-      return "Your BMI is above the healthy range. Keep tracking meals and increase your active minutes gradually.";
+    if (progress.workoutsCompleted >= progress.workoutGoal) {
+      return "Excellent consistency! You achieved your workout goal this week. Keep balancing activity with recovery.";
     }
 
-    return "Great job! Your BMI is in the healthy range. Keep your routine consistent.";
+    if (progress.activeMinutes < progress.activeMinutesGoal) {
+      return "You are close to your activity goal. A short walk can help improve your cardiovascular health.";
+    }
+
+    if (progress.status == "Underweight") {
+      return "Your BMI is below the healthy range. Focus on nutrient-dense meals with enough protein and healthy carbs.";
+    }
+
+    if (progress.status == "Overweight" || progress.status == "Obese") {
+      return "Your BMI is above the healthy range. A gradual calorie deficit with consistent activity is safer and more sustainable.";
+    }
+
+    return "Great job! Your BMI is within the healthy range. Keep your nutrition, activity, and hydration consistent.";
   }
 }
 
-class _StatCard extends StatelessWidget {
+class _ProgressStatCard extends StatelessWidget {
   final IconData icon;
   final String title;
-  final String value;
+  final int current;
+  final int goal;
   final String unit;
 
-  const _StatCard({
+  const _ProgressStatCard({
     required this.icon,
     required this.title,
-    required this.value,
+    required this.current,
+    required this.goal,
     required this.unit,
   });
 
   @override
   Widget build(BuildContext context) {
+    final double progress = goal == 0 ? 0 : (current / goal).clamp(0.0, 1.0);
+
     return Container(
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
@@ -289,28 +244,118 @@ class _StatCard extends StatelessWidget {
             ),
           ),
 
-          const SizedBox(height: 4),
+          const SizedBox(height: 6),
 
-          RichText(
-            text: TextSpan(
-              children: [
-                TextSpan(
-                  text: value,
-                  style: const TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.w900,
-                    color: AppColors.textDark,
-                  ),
-                ),
-                TextSpan(
-                  text: " $unit",
-                  style: const TextStyle(
-                    fontSize: 12,
-                    color: AppColors.textLight,
-                  ),
-                ),
-              ],
+          Text(
+            "$current / $goal $unit",
+            style: const TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.w900,
+              color: AppColors.textDark,
             ),
+          ),
+
+          const SizedBox(height: 12),
+
+          ClipRRect(
+            borderRadius: BorderRadius.circular(20),
+            child: LinearProgressIndicator(
+              value: progress,
+              minHeight: 8,
+              color: AppColors.primary,
+              backgroundColor: AppColors.primary.withOpacity(0.12),
+            ),
+          ),
+
+          const SizedBox(height: 8),
+
+          Text(
+            "${(progress * 100).round()}% completed",
+            style: const TextStyle(
+              fontSize: 12,
+              color: AppColors.textLight,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _WeightTrendSection extends StatelessWidget {
+  final ProgressModel progress;
+
+  const _WeightTrendSection({
+    required this.progress,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final change = progress.weightChange;
+    final changeText =
+        "${change >= 0 ? "+" : ""}${change.toStringAsFixed(1)} kg this week";
+
+    return Container(
+      padding: const EdgeInsets.all(18),
+      decoration: BoxDecoration(
+        color: AppColors.white,
+        borderRadius: BorderRadius.circular(22),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    "Weight Trend",
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w800,
+                      color: AppColors.textDark,
+                    ),
+                  ),
+
+                  const SizedBox(height: 4),
+
+                  Text(
+                    changeText,
+                    style: const TextStyle(
+                      fontSize: 12,
+                      color: AppColors.textLight,
+                    ),
+                  ),
+                ],
+              ),
+
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 6,
+                ),
+                decoration: BoxDecoration(
+                  color: AppColors.primary.withOpacity(0.10),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: const Text(
+                  "Week",
+                  style: TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w700,
+                    color: AppColors.primary,
+                  ),
+                ),
+              ),
+            ],
+          ),
+
+          const SizedBox(height: 18),
+
+          WeightChart(
+            weights: progress.weightHistory,
           ),
         ],
       ),
@@ -350,7 +395,7 @@ class _InsightCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Text(
-                  "Metabolic Momentum",
+                  "Personalized Health Insight",
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 15,
