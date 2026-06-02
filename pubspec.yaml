@@ -12,13 +12,13 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  health: ^13.3.1
+
   cupertino_icons: ^1.0.8
-
+  health: ^13.3.1
+  image_picker: ^1.1.2
+  dotted_border: ^2.1.0
   shared_preferences: ^2.5.5
-
   dio: ^5.9.2
-
   percent_indicator: ^4.2.3
 
 dev_dependencies:
